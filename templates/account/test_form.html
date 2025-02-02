@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Form</title>
+</head>
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.usertype.label_tag }}
+        {{ form.usertype }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

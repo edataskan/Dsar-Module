@@ -1,0 +1,261 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% load widget_tweaks %}
+
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block content %}
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        font-family: 'Inter UI', sans-serif;
+        background-color: #f0f4f8;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 200px; /* Navbar height */
+        padding-bottom: 200px; /* Footer height */
+    }
+
+    .signup-box {
+        display: flex;
+        width: 90%; /* Reduced width */
+        max-width: 800px; /* Reduced max-width */
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        border: 1px solid #e2e2e5; /* Added border for more definition */
+    }
+
+    .signup-left, .signup-right {
+        flex: 1;
+        padding: 30px; /* Reduced padding */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .signup-left {
+        background-color: #41c389;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .signup-left i {
+        font-size: 80px; /* Reduced icon size */
+        color: #b7e4c7;
+        margin-bottom: 20px;
+    }
+
+    .signup-left h1 {
+        font-size: 30px; /* Reduced font size */
+        margin-bottom: 20px;
+    }
+
+    .signup-right {
+        background-color: #ffffff;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: 30px; /* Reduced padding */
+    }
+
+    .signup-right .form-icon {
+        font-size: 50px; /* Reduced icon size */
+        color: #2d6a4f;
+        margin-bottom: 20px;
+    }
+
+    .signup-right h2 {
+        color: #2d6a4f;
+        font-size: 24px; /* Reduced font size */
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15px; /* Reduced bottom margin */
+    }
+
+    .form-group label {
+        color: #6c757d;
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group select {
+        padding: 0 40px 0 10px; /* Added padding for icons */
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        height: 45px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 10px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+    }
+
+    .form-group input:focus, .form-group select:focus {
+        border-color: #4070f4;
+        outline: none; /* Removed default outline */
+        box-shadow: 0 0 0 2px rgba(64, 112, 244, 0.2); /* Custom focus shadow */
+    }
+
+    .form-group i {
+        position: absolute;
+        left: 10px; /* Adjusted position */
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+
+    .btn-primary {
+        background-color: #52b788;
+        border-color: #52b788;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+        color: white;
+        text-align: center;
+        width: 100%;
+        max-width: 220px; /* Reduced max-width */
+        border: none; /* Removed default border */
+    }
+
+    .btn-primary:hover {
+        background-color: #40916c;
+        transform: scale(1.05);
+    }
+
+    .social-login {
+        margin-top: 15px; /* Reduced top margin */
+        text-align: center;
+    }
+
+    .social-login a {
+        display: inline-flex;
+        align-items: center;
+        background: #e4c199;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .social-login a:hover {
+        background: #3367D6;
+        transform: scale(1.05);
+    }
+
+    .forgot-password {
+        margin-top: 15px; /* Reduced top margin */
+        text-align: center;
+    }
+
+    .forgot-password a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .forgot-password a:hover {
+        text-decoration: underline;
+    }
+
+    footer {
+        background: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+
+<div class="main-content">
+    <div class="signup-box">
+        <div class="signup-left">
+            <i class="fas fa-user-plus"></i>
+            <h1>{% trans "Sign Up" %}</h1>
+        </div>
+        <div class="signup-right">
+            <i class="fas fa-user-edit form-icon"></i> <!-- Icon added here -->
+            <h2>{% trans "Create Your Account" %}</h2>
+            <form method="post" class="form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <label for="username">{% trans "Username" %}</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <label for="first_name">{% trans "First Name" %}</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <label for="last_name">{% trans "Last Name" %}</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <label for="email">{% trans "Email" %}</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user-tag"></i>
+                    <label for="usertype">{% trans "User Type" %}</label>
+                    {{ form.usertype }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <label for="password1">{% trans "Password" %}</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <label for="password2">{% trans "Confirm Password" %}</label>
+                    {{ form.password2 }}
+                </div>
+                <button class="btn btn-primary" type="submit" id="submit">{% trans "Sign Up" %}</button>
+            </form>
+            <div class="social-login">
+                <a href="{% provider_login_url 'google' %}">
+                    <i class="fab fa-google"></i> {% trans "Sign Up with Google" %}
+                </a>
+            </div>
+            <div class="forgot-password">
+                <p>{% trans "Already have an account? Then please" %} <a href="{% url 'account_login' %}">{% trans "sign in" %}</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

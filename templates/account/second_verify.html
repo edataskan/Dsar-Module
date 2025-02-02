@@ -1,0 +1,216 @@
+{% extends "account/base.html" %}
+{%load static %}
+{% block head_title %}
+Second Stage Verification
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f4f4f4; /* Softer background color */
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f4f4f4; /* Main area background color */
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+      padding: 100px;
+      margin-top: 50px;
+      margin: 40px 20px; /* Increased spacing */
+    }
+
+    .otp-container {
+      background: #fff;
+      padding: 30px 50px; /* Adjust padding */
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 50px; /* Ensure margin is not too small */
+    }
+
+    .otp-container header {
+      height: 65px;
+      width: 65px;
+      background: #4070f4;
+      color: #fff;
+      font-size: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto; /* Center the icon */
+    }
+
+    .otp-container h4 {
+      font-size: 1.25rem;
+      color: #333;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 20px; /* Increase space above the heading */
+    }
+
+    .otp-container p {
+      font-size: 1rem;
+      color: #666;
+      text-align: center;
+      margin-top: 10px; /* Add space above the paragraph */
+    }
+
+    .notification {
+      background-color: #e9ecef;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 30px; /* Increased margin */
+      text-align: center;
+    }
+
+    .notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: row;
+      column-gap: 15px; /* Increased gap between boxes */
+      margin-top: 20px;
+    }
+
+    .input-field input {
+      height: 55px; /* Increased height */
+      width: 55px; /* Increased width */
+      border-radius: 6px;
+      outline: none;
+      font-size: 1.25rem; /* Increased font size */
+      text-align: center;
+      border: 2px solid #4070f4; /* More visible border */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .input-field input:focus {
+      border-color: #0e4bf1; /* Border color on focus */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increased shadow on focus */
+    }
+
+    .input-field input::-webkit-inner-spin-button,
+    .input-field input::-webkit-outer-spin-button {
+      display: none;
+    }
+
+    form button {
+      margin-top: 25px;
+      width: 100%;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      padding: 10px 0; /* Increased padding */
+      cursor: pointer;
+      border-radius: 6px;
+      background: #6e93f7;
+      transition: all 0.2s ease;
+    }
+
+    form button.active {
+      background: #4070f4;
+      pointer-events: auto;
+    }
+
+    form button:hover {
+      background: #0e4bf1;
+    }
+
+    /* Footer Styles */
+    footer {
+      width: 100%;
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0; /* Increased padding */
+      position: relative;
+      bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="otp-container">
+    <header>
+      <i class="bx bxs-check-shield"></i>
+    </header>
+    <h4>Second Stage Verification</h4>
+
+    <!-- OTP Notification Message -->
+    <div class="notification">
+        An OTP was sent to you before the controller approved your request. Please enter this code.
+    </div>
+
+    <!-- Form Errors -->
+    {% if messages %}
+        <div class="notification {% if messages.tags == 'error' %}error{% else %}success{% endif %}">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-field">
+            <input type="number" name="digit1" />
+            <input type="number" name="digit2" />
+            <input type="number" name="digit3" />
+            <input type="number" name="digit4" />
+            <input type="number" name="digit5" />
+            <input type="number" name="digit6" />
+          </div>
+        <button type="submit">Verify</button>
+    </form>
+  </div>
+</main>
+
+<script src="{% static 'js/otp_script.js' %}" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ensure the check only happens if it hasn't been done already
+        if (!sessionStorage.getItem('dsar_status_checked')) {
+            fetch("{% url 'core:check_dsar_request_status' %}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.approved && !data.verified) {
+                        window.location.href = "{% url 'core:second_verify' %}";
+                    }
+                    sessionStorage.setItem('dsar_status_checked', 'true');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+{% endblock %}

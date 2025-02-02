@@ -1,0 +1,228 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+<!-- Font Awesome kütüphanesini ekleyin -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+<style>
+    /* Genel Stiller */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-color: #f4f4f4; /* Sayfa arka plan rengi */
+    }
+
+    .navbar {
+        width: 100%;
+        background: #333; /* Navbar arka plan rengi */
+        color: #fff;
+        padding: 10px 20px; /* Navbar padding */
+        position: relative;
+        z-index: 1000; /* Navbar'ın diğer içeriklerin üstünde olmasını sağlar */
+    }
+
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f4f4f4; /* Ana içerik arka plan rengi */
+        padding: 80px; /* Padding ayarları */
+        margin-top: 80px; /* Navbar'dan uzaklık için üst margin */
+    }
+
+    .dsar-container {
+        display: flex;
+        max-width: 800px; /* Kutu boyutu */
+        width: 100%;
+        padding: 40px; /* Padding artırıldı */
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 40px; /* Alt margin */
+    }
+
+    .left-box, .right-box {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .left-box {
+        border-right: 2px solid #ddd; /* İki kutu arasındaki ayırıcı */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .left-box h1 {
+        text-align: center;
+        color: #333;
+        margin: 0;
+        margin-bottom: 20px; /* Başlık ile simge arasında boşluk */
+    }
+
+    .left-box i {
+        font-size: 60px; /* Simge boyutu */
+        color: #4070f4; /* Simge rengi */
+    }
+
+    .right-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .dsar-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dsar-form label {
+        margin-bottom: 5px;
+        color: #756c9c;
+        font-size: 18px; /* Yazı boyutu */
+    }
+
+    .dsar-form .info-text {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 16px; /* Yazı boyutu */
+        font-weight: 400; /* Yazı kalınlığı */
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px; /* Giriş ve buton arasındaki boşluk */
+    }
+
+    .input-group .iti {
+        flex: 0 0 auto; /* Boyutlandırmayı engelle */
+        margin-right: 10px; /* Bayrak ile giriş arasında boşluk */
+    }
+
+    .dsar-form input[type="tel"] {
+        padding: 15px; /* Padding artırıldı */
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 18px; /* Yazı boyutu */
+        flex: 1;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dsar-form input[type="tel"]:focus {
+        border-color: #4070f4;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .dsar-form button {
+        padding: 15px 25px; /* Padding artırıldı */
+        border: none;
+        border-radius: 6px;
+        background-color: #4070f4;
+        color: white;
+        font-size: 18px; /* Yazı boyutu */
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 30px; /* Butonun aşağıda olması için margin */
+    }
+
+    .dsar-form button:hover {
+        background-color: #0e4bf1;
+    }
+
+    .messages {
+        margin-top: 20px;
+        padding: 0;
+        list-style: none;
+    }
+
+    .messages li {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+    .messages li.error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .messages li.success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    footer {
+        width: 100%;
+        background: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0; /* Footer padding */
+        position: relative;
+        bottom: 0;
+    }
+</style>
+
+<div class="navbar">
+    <!-- Navbar içeriği buraya gelecek -->
+</div>
+
+<main>
+    <div class="dsar-container">
+        <div class="left-box">
+            <h1>Get My Data</h1>
+            <!-- Telefon İkonu -->
+            <i class="fas fa-phone-alt"></i>
+        </div>
+        <div class="right-box">
+            <form method="post" class="dsar-form">
+                {% csrf_token %}
+                <div class="info-text">
+                    You need to enter your phone number to receive the verification code.
+                </div>
+                <label for="id_phone_number">Phone Number</label>
+                <div class="input-group">
+                    {{ form.phone_number }}
+                </div>
+                <button type="submit">Send</button>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var input = document.querySelector("#id_phone_number");
+        window.intlTelInput(input, {
+            initialCountry: "auto",
+            geoIpLookup: function(success, failure) {
+                fetch('https://ipinfo.io/json?token=YOUR_TOKEN')
+                    .then(response => response.json())
+                    .then(data => success(data.country))
+                    .catch(() => success("us"));
+            },
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+    });
+</script>
+
+{% endblock %}

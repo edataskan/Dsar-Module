@@ -1,0 +1,15 @@
+<p>Merhaba {{ first_name }} {{ last_name }},</p>
+<p>Talebiniz onaylandı. İşlemleriniz başlatıldı.</p>
+<p>Talep Zamanı: {{ request_time|date:"b. d, Y, I:M p" }}</p>
+
+<h3>Kullanıcı Bilgileriniz:</h3>
+<ul>
+    <li>Kullanıcı Adı: {{ user_data.username }}</li>
+    <li>E-posta: {{ user_data.email }}</li>
+    <li>İsim: {{ user_data.first_name }}</li>
+    <li>Soyisim: {{ user_data.last_name }}</li>
+    <li>Oluşturma Tarihi: {{ user_data.date_joined|date:"b. d, Y, I:M p" }}</li>
+    
+</ul>
+
+<p>İyi günler dileriz.</p>

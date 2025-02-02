@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypted Data Notification</title>
+</head>
+<body>
+    <h1>Encrypted Data Notification</h1>
+    <p>Dear {{ first_name }} {{ last_name }},</p>
+    <p>Your data request has been successfully processed and encrypted. Below are the details of your request:</p>
+    <ul>
+        <li><strong>First Name:</strong> {{ first_name }}</li>
+        <li><strong>Last Name:</strong> {{ last_name }}</li>
+        <li><strong>Request Time:</strong> {{ request_time }}</li>
+        <li><strong>Street Address:</strong> {{ street_address }}</li>
+        <li><strong>Apartment Address:</strong> {{ apart }}</li>
+    </ul>
+    <p>The data has been encrypted and sent securely. If you have any questions or need further assistance, please feel free to contact us.</p>
+    <p>Best regards,<br>
+    DSAR Module Team</p>
+</body>
+</html>

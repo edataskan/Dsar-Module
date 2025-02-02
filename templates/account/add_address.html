@@ -1,0 +1,17 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Add Address" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="mb-4">{% trans "Add Address" %}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">{% trans "Add Address" %}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

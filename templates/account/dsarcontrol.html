@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSAR Control</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'images/lo.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa; /* Açık bej arka plan */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 40px;
+            margin: 40px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 i {
+            margin-right: 10px; /* İkon ile başlık arasındaki boşluk */
+            color: #007bff; /* İkon rengi */
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-content {
+            display: flex;
+            flex-direction: column;
+        }
+        .card-content span {
+            margin: 5px 0;
+        }
+        .approved {
+            color: #28a745;
+            font-weight: 600;
+        }
+        .not-approved {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .approve-button, .pending-button, .approved-controller-button {
+            display: inline-block;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .approve-button {
+            background-color: #007bff;
+            color: white;
+        }
+        .approve-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .pending-button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .pending-button:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+        .approved-controller-button {
+            background-color: #28a745;
+            color: white;
+        }
+        .approved-controller-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+        .flash-red {
+            background-color: #f8d7da;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        .icon {
+            margin-right: 8px;
+        }
+        .progress-bar {
+            height: 20px;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            margin-bottom: 10px;
+        }
+        .progress-bar span {
+            display: block;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .tooltip-inner {
+            background-color: #333;
+            color: #fff;
+        }
+        .popover-body {
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-list"></i> DSAR Requests</h1>
+        {% for request in dsar_requests %}
+            <div class="card {% if not request.approvedbydc and request.approved %}flash-red{% endif %}">
+                <div class="card-header">
+                    <span>{{ request.first_name }} {{ request.last_name }}</span>
+                    <span class="{% if request.approved %}approved{% else %}not-approved{% endif %}">
+                        {% if request.approved %}Approved by Data Processor{% else %}Waiting for Data Processor{% endif %}
+                    </span>
+                </div>
+                <div class="card-content">
+                    <div><i class="fas fa-phone icon"></i>{{ request.phone_number }}</div>
+                    <div><i class="fas fa-clock icon"></i>{{ request.request_time }}</div>
+                    {% if request.approved %}
+                        <div>
+                            {% if not request.approvedbydc %}
+                                <form action="{% url 'core:approve_dsarcontrol' request.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="pending-button" data-toggle="tooltip" data-placement="top" title="Approve request">Pending Approval</button>
+                                </form>
+                            {% else %}
+                                <div class="approved-controller-button">Approved by Data Controller</div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="not-approved">Waiting for approval from the Data Processor</div>
+                    {% endif %}
+                    <!-- Progress Bar Example -->
+                    <div class="progress-bar">
+                        <span style="width: {{ request.approval_progress }}%; background-color: {% if request.approved %}#28a745{% else %}#dc3545{% endif %};"></span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+</body>
+</html>

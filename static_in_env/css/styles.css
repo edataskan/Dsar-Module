@@ -1,0 +1,13 @@
+.form-control {
+    margin-bottom: 15px;
+    display: block;  /* Alanların görünür olduğunu doğrulamak için */
+  }
+  .signup-form {
+    max-width: 400px;
+    margin: auto;
+  }
+  .signin-link {
+    text-align: center;
+    margin-top: 15px;
+  }
+  

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+    <div class="info-container">
+        <h2>{% trans "How to Create a PGP Public Key" %}</h2>
+        <p>{% trans "A PGP (Pretty Good Privacy) public key is used for encrypting data and ensuring its security. To create a PGP public key, follow these steps:" %}</p>
+
+        <ol>
+            <li>{% trans "Install a PGP tool on your computer. Popular tools include Gpg4win for Windows, GPG Suite for macOS, and GnuPG for Linux." %}</li>
+            <li>{% trans "Open the PGP tool and look for an option to generate a new key pair." %}</li>
+            <li>{% trans "Follow the prompts to create a new key pair. You will need to enter some personal information, such as your name and email address." %}</li>
+            <li>{% trans "Set a strong passphrase to protect your private key. Make sure to remember this passphrase, as it will be required to use your private key." %}</li>
+            <li>{% trans "Once the key pair is generated, you will have a public key and a private key. The public key is used to encrypt data, while the private key is used to decrypt it." %}</li>
+            <li>{% trans "Export your public key from the PGP tool. This will be a file that you can upload or share with others." %}</li>
+        </ol>
+
+        <p>{% trans "For detailed instructions and screenshots, please refer to the documentation of the PGP tool you are using." %}</p>
+
+        
+        <a href="{% url 'core:upload_public_key' request_id=request.id %}">Upload Public Key</a>
+
+    </div>
+
+    <style>
+        body {
+            background-color: #4f92c5;
+        }
+        .info-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 1px solid #e0e0e0;
+        }
+
+        .info-container h2 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            font-weight: 700;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .info-container p {
+            font-size: 18px;
+            color: #555555;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .info-container ol {
+            margin: 20px 0;
+            padding-left: 20px;
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .info-container ol li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+            line-height: 1.6;
+        }
+
+        .info-container ol li::before {
+            content: '✔️';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #28a745;
+            font-size: 18px;
+        }
+
+        .info-container .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 18px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .info-container .back-link:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
+{% endblock content %}

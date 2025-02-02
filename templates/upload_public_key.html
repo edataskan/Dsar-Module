@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+    <div class="pgp-upload-container">
+        <h2>{% trans "Upload PGP Public Key" %}</h2>
+
+        <form id="pgp-upload-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="custom-file-upload">
+                <label for="file-upload" class="custom-file-upload-label">
+                    {% trans "Select File" %}
+                </label>
+                <input id="file-upload" type="file" name="public_key">
+                <span id="file-selected">{% trans "No file selected" %}</span>
+            </div>
+            <button type="submit">{% trans "Upload" %}</button>
+        </form>
+        
+
+        <div class="info-link">
+            <a href="{% url 'core:inform' %}" class="how-to-link">{% trans "How to create PGP public key?" %}</a>
+        </div>
+
+        {% if messages %}
+            <ul class="message-list">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <style>
+        /* Container Styling */
+        .pgp-upload-container {
+            max-width: 750px;
+            margin: 100px auto;
+            padding: 50px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            background-color: #4f92c5;
+        }
+
+        /* Heading */
+        .pgp-upload-container h2 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        /* Form Fields */
+        .pgp-upload-container form input[type="file"],
+        .pgp-upload-container form button[type="submit"],
+        .pgp-upload-container form input,
+        .pgp-upload-container form select,
+        .pgp-upload-container form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        /* Custom File Upload */
+        .custom-file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .custom-file-upload-label {
+            background-color: #c9d3de;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .custom-file-upload-label:hover {
+            background-color: #333;
+        }
+
+        /* Hide the original file input */
+        input[type="file"] {
+            display: none;
+        }
+
+        /* File selected label */
+        #file-selected {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+
+        /* Submit Button */
+        .pgp-upload-container form button[type="submit"] {
+            background-color: #998ca0;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .pgp-upload-container form button[type="submit"]:hover {
+            background-color: #333;
+        }
+
+        /* How to link */
+        .info-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .how-to-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .how-to-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Messages */
+        .pgp-upload-container .message-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .pgp-upload-container .message-list li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .pgp-upload-container .message-list li.success {
+            background-color: #28a745;
+        }
+
+        .pgp-upload-container .message-list li.error {
+            background-color: #dc3545;
+        }
+
+        .pgp-upload-container .message-list li.warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .pgp-upload-container .message-list li.info {
+            background-color: #17a2b8;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('pgp-upload-form');
+            var fileInput = document.getElementById('file-upload');
+            var fileSelectedText = document.getElementById('file-selected');
+
+            fileInput.addEventListener('change', function() {
+                var fileName = this.files.length > 0 ? this.files[0].name : "{% trans 'No file selected' %}";
+                fileSelectedText.textContent = fileName;
+            });
+
+            form.addEventListener('submit', function(event) {
+                if (fileInput.files.length === 0) {
+                    event.preventDefault(); // Formun gönderilmesini engelle
+                    fileSelectedText.textContent = "{% trans 'No file selected' %}"; // Hata mesajını güncelle
+                }
+            });
+        });
+    </script>
+{% endblock content %}

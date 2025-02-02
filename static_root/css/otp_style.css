@@ -1,0 +1,142 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #4791ae; /* Daha yumuşak bir arka plan rengi */
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #4791ae; /* Ana alanın arka plan rengi */
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Daha yumuşak bir gölge */
+  padding: 40px;
+  margin: 40px 20px; /* Aralığı artır */
+}
+
+.otp-container {
+  background: #fff;
+  padding: 30px 50px; /* Padding'i azaltarak alanı düzenleyin */
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 50px; /* Margini koruyun, böylece kutular navbar ile birleşmez */
+}
+
+.otp-container header {
+  height: 65px;
+  width: 65px;
+  background: #4070f4;
+  color: #fff;
+  font-size: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* Center the icon */
+}
+
+.otp-container h4 {
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 20px; /* Increase space above the heading */
+}
+
+.notification {
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 30px; /* Increased margin to add space */
+  text-align: center;
+}
+
+.notification.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.notification.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: row;
+  column-gap: 15px; /* Increase the gap between the boxes */
+  margin-top: 20px;
+}
+
+.input-field input {
+  height: 55px; /* Increase the height */
+  width: 55px; /* Genişliği artırarak kutuları daha uyumlu hale getirin */
+  border-radius: 6px;
+  outline: none;
+  font-size: 1.25rem; /* Increase the font size */
+  text-align: center;
+  border: 2px solid #4070f4; /* Make the border more visible */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.input-field input:focus {
+  border-color: #0e4bf1; /* Change border color on focus */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on focus */
+}
+
+.input-field input::-webkit-inner-spin-button,
+.input-field input::-webkit-outer-spin-button {
+  display: none;
+}
+
+form button {
+  margin-top: 25px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  padding: 10px 0; /* Padding'i artırarak düğmeyi daha belirgin hale getirin */
+  cursor: pointer;
+  border-radius: 6px;
+  background: #6e93f7;
+  transition: all 0.2s ease;
+}
+
+form button.active {
+  background: #4070f4;
+  pointer-events: auto;
+}
+
+form button:hover {
+  background: #0e4bf1;
+}
+
+/* Footer Styles */
+footer {
+  width: 100%;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0; /* Padding'i artırarak footer'ı daha belirgin hale getirin */
+  position: relative;
+  bottom: 0;
+}

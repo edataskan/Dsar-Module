@@ -1,0 +1,370 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load category_template_tags %}
+{% load slide_template_tags %}
+
+{% block content %}
+<style>
+/*[ Block2 ]
+///////////////////////////////////////////////////////////
+*/
+.block2-labelpromotion::before,
+.block2-labelsale::before,
+.block2-labelnew::before 
+{
+  z-index: 100;
+  font-family: Montserrat-Regular;
+  font-size: 12px;
+  color: white;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 22px;
+  border-radius: 11px;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.block2-labelsale::before {
+  background-color: white;
+  color: #000;
+  content: 'Sale';
+}
+
+.block2-labelnew::before {
+  background-color: #007bff;
+  content: 'New';
+}
+
+.block2-labelpromotion::before {
+  background-color: #000;
+  content: 'Promotion';
+  width: 70px;
+}
+
+.btn-dark {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+}
+
+.btn-outline-dark {
+  color: #000;
+  border-color: #000;
+}
+
+.hov1 {
+  background-color: white !important;
+  color: black !important;
+}
+
+.newproduct {
+  margin-bottom: 2px;
+  padding-bottom: 2px;
+}
+
+.banner2 {
+  background-color: #fff;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.ban_img {
+  height: 680px;
+  width: 100%;
+}
+
+.ban5_img {
+  height: 580px;
+  width: 100%;
+}
+
+.btn-light {
+  color: #000;
+  background-color: #fff;
+  border-color: #fff;
+  border-radius: 20px;
+}
+
+.wrap-btn-slide1 a:hover {
+  background-color: whitesmoke;
+  color: #000 !important;
+  opacity: 0.7;
+}
+
+/* Carousel Styles */
+.carousel-inner img {
+  height: 500px;
+  width: 80%; /* Carousel genişliğini ayarlar */
+  max-width: 1200px; /* Maksimum genişlik belirler */
+  margin: 0 auto;
+}
+
+.banner {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Ensure the row has display flex for horizontal layout */
+.row {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap onto new lines if needed */
+  margin: -15px; /* Adjust spacing if needed */
+}
+.banner .container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+}
+
+.banner .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center items horizontally */
+}
+
+.category-item {
+  margin-bottom: 30px;
+  flex: 0 0 25%; /* Adjust the size to fit the container */
+  max-width: 25%; /* Ensure items don’t exceed container width */
+  display: flex;
+  justify-content: center; /* Center items horizontally within their column */
+}
+
+.category-item img {
+  width: 100%;
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+}
+
+.category-item .block1-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent; /* Remove the black filter */
+  color: white;
+  /* Optional: Add a border or shadow if needed */
+  border: 2px solid white;
+}
+
+
+.category-item .block1-overlay h4 {
+  color: white;
+  font-size: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .category-item {
+    flex: 1 0 48%; /* Two items per row on medium screens */
+  }
+}
+
+@media (max-width: 767px) {
+  .category-item {
+    flex: 1 0 100%; /* One item per row on small screens */
+  }
+}
+
+</style>
+
+<script>
+	function checkRequestStatus() {
+		fetch('{% url "core:check_dsar_request_status" %}')
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json();
+			})
+			.then(data => {
+				if (data && data.approved) {
+					window.location.href = "{% url 'core:second_verify' %}";
+				}
+			})
+			.catch(error => console.error('Error:', error));
+	}
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		checkRequestStatus();
+	});
+</script>
+
+<!-- Carousel -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <!-- First Slide -->
+    <div class="carousel-item active">
+      <a href="{% url 'core:category' slug='women' %}">
+        <img class="d-block w-100" src="{% static 'images/w.jpeg' %}" alt="Women's Fashion">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 class="display-4">Empower Your Style</h5>
+          <p class="lead" style="color: white;">Discover the latest trends in women's fashion. From elegant dresses to casual wear, find your perfect look today!</p>
+        </div>
+      </a>
+    </div>
+    <!-- Second Slide -->
+    <div class="carousel-item">
+      <a href="{% url 'core:category' slug='men' %}">
+        <img class="d-block w-100" src="{% static 'images/m.jpg' %}" alt="Men's Fashion">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 class="display-4">Elevate Your Wardrobe</h5>
+          <p class="lead">Explore a range of stylish and sophisticated men's apparel. Whether it's formal or casual, we've got you covered.</p>
+        </div>
+      </a>
+    </div>
+    <!-- Third Slide -->
+    <div class="carousel-item">
+      <a href="{% url 'core:category' slug='kids' %}">
+        <img class="d-block w-100" src="{% static 'images/slide3.jpeg' %}" alt="Kids' Fashion">
+        <div class="carousel-caption d-none d-md-block">
+          <h5 class="display-4 text-black">Fun and Fabulous Kidswear</h5>
+          <p class="lead">Brighten up your child's wardrobe with our adorable and comfortable kids' clothing. Perfect for playtime and beyond!</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+
+<!-- Slide1 -->
+<section class="slide1">
+  <div class="wrap-slick1">
+    <div class="slick1">
+      {% slides %}
+    </div>
+  </div>
+</section>
+
+
+
+<!-- New Product -->
+<section class="newproduct bgwhite p-t-45 p-b-105">
+  <div class="container">
+    <div class="sec-title p-b-60">
+      <h3 class="m-text5 t-center">
+        Featured Products
+      </h3>
+    </div>
+
+    <!-- Slide2 -->
+    <div class="wrap-slick2">
+      <div class="slick2">
+        {% for item in object_list %}
+        <div class="item-slick2 p-l-15 p-r-15">
+          <!-- Block2 -->
+          <div class="block2">
+            <div class="block2-img wrap-pic-w of-hidden pos-relative block2-label{{item.get_label_display}}">
+              <a href="{{item.get_absolute_url}}">
+                <img src="{{ item.image.url }}" alt="IMG-PRODUCT" style="height: 370px; width:100%;">
+              </a>
+            </div>
+
+            <div class="block2-txt p-t-20">
+              <a href="{{item.get_absolute_url}}" class="block2-name dis-block s-text3 p-b-5" style="color: black;">
+                {{ item.title }}
+              </a>
+
+              {% if item.discount_price %}
+              <span class="block2-oldprice m-text7 p-r-5" style="color: black;">
+                ${{ item.price }}
+              </span>
+              <span class="block2-newprice m-text8 p-r-5">
+                ${{ item.discount_price }}
+              </span>
+              {% else %}
+              <span class="block2-price m-text6 p-r-5" style="color: black;">
+                ${{ item.price }}
+              </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<section class="banner bgwhite p-t-40 p-b-40">
+  <div class="container">
+    <div class="row">
+      <!-- Example category items; replace this with your dynamic categories -->
+      <div class="col-md-4 category-item">
+        <div class="block1 wrap-pic-w">
+          <img src="{% static 'images/women.webp' %}" alt="Women">
+          <a href="{% url 'core:category' slug='women' %}" class="block1-overlay">
+            <h4 class="s-text4">Women</h4>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 category-item">
+        <div class="block1 wrap-pic-w">
+          <img src="{% static 'images/men.jpg' %}" alt="Men">
+          <a href="{% url 'core:category' slug='men' %}" class="block1-overlay">
+            <h4 class="s-text4">Men</h4>
+          </a>
+        </div>
+      </div>
+      <!-- Add more categories as needed -->
+    </div>
+  </div>
+</section>
+
+<!-- Shipping -->
+<section class="shipping bgwhite p-t-62 p-b-46">
+  <div class="flex-w p-l-15 p-r-15">
+    <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+      <h4 class="m-text12 t-center">
+        Free Delivery Worldwide
+      </h4>
+      <a href="#" class="s-text11 t-center">
+        Click here for more info
+      </a>
+    </div>
+
+    <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 bo2 respon2">
+      <h4 class="m-text12 t-center">
+        30 Days Return
+      </h4>
+      <span class="s-text11 t-center">
+        Simply return it within 30 days for an exchange.
+      </span>
+    </div>
+
+    <div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+      <h4 class="m-text12 t-center">
+        Store Opening
+      </h4>
+      <span class="s-text11 t-center">
+        Shop open from Monday to Sunday
+      </span>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

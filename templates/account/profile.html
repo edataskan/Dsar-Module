@@ -1,0 +1,348 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Profile" %}{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f9fc;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        h1, h2 {
+            font-weight: 600;
+            color: #444;
+        }
+
+        .profile-change-username-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .profile-box, .card {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .profile-box {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            width: 48%;
+        }
+
+        .profile-icon {
+            font-size: 2.5rem;
+            color: #28a745;
+            margin-right: 15px;
+        }
+
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 48%;
+        }
+
+        .card-header {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            margin-top: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group-prepend {
+            background-color: #f7f9fc;
+            border: 1px solid #ced4da;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .input-group .form-control {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .input-group-text {
+            background-color: transparent;
+            border: none;
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+        
+        .list-group-item {
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-group-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .address-details {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.875rem;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .input-group .form-control {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group-append {
+            background-color: #f7f9fc;
+            border: 1px solid #ced4da;
+            border-left: none;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-group-append .input-group-text {
+            background-color: transparent;
+            border: none;
+            color: #28a745;
+            font-size: 1.2rem;
+        }
+
+        .address-form-box {
+            padding: 30px;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-form-box h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .address-form-box input[type="text"]:focus,
+        .address-form-box select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+        .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="profile-change-username-wrapper">
+            <div class="profile-box">
+                <i class="profile-icon fas fa-user"></i>
+                <div>
+                    <h1>{% trans "Profile" %}</h1>
+                    <p><strong>{% trans "Username:" %}</strong> {{ user.username }}</p>
+                    <p><strong>{% trans "Email:" %}</strong> {{ user.email }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">{% trans "Change Username" %}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'core:profile' %}">
+                        {% csrf_token %}
+                        {{ username_form.as_p }}
+                        <button type="submit" name="username_form" class="btn btn-primary">{% trans "Save changes" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mt-5">{% trans "Addresses" %}</h2>
+        <ul class="list-group list-group-flush mb-4">
+            {% for address in addresses %}
+                <li class="list-group-item">
+                    <div class="address-details">
+                        {{ address.street_address }}, {{ address.country }}, {{ address.city }}, {{ address.state }}, {{ address.zip_code }}
+                    </div>
+                    <div class="address-actions">
+                        <a href="{% url 'core:edit_address' address.id %}" class="btn btn-sm btn-warning">
+                            <i class="fas fa-edit"></i> {% trans "Edit" %}
+                        </a>
+                        <a href="{% url 'core:delete_address' address.id %}" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i> {% trans "Delete" %}
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="address-form-box">
+            <h2 class="card-title mb-3">{% trans "Add New Address" %}</h2>
+            <form method="post" action="{% url 'core:profile' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_street_address">{% trans "Street Address" %}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-road"></i>
+                            </span>
+                        </div>
+                        {{ address_form.street_address }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_country">{% trans "Country" %}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-globe"></i>
+                            </span>
+                        </div>
+                        {{ address_form.country }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_city">{% trans "City" %}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-city"></i>
+                            </span>
+                        </div>
+                        {{ address_form.city }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_state">{% trans "State" %}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </span>
+                        </div>
+                        {{ address_form.state }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_zip_code">{% trans "ZIP Code" %}</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                        {{ address_form.zip_code }}
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">{% trans "Save Address" %}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

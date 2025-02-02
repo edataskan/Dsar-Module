@@ -1,0 +1,66 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Edit Address" %}{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ea7c32;
+        }
+        .card {
+            max-width: 750px; /* Genişliği ihtiyacınıza göre ayarlayın */
+            margin: auto;   
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* Kart Başlıkları */
+        .card-header {
+            background-color: #e4c199;
+            color: #fff;
+            font-weight: bold;
+            border-bottom: 0;
+            padding: 15px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background-color: #e4c199;
+            border-color: #e4c199;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #e67e22;
+            border-color: #d35400;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2 class="card-title">{% trans "Edit Address" %}</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-block mt-3">{% trans "Save Changes" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
